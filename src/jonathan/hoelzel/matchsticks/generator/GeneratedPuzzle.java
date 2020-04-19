@@ -19,6 +19,10 @@ public class GeneratedPuzzle {
        return difficulty;
     }
 
+    public int getItersToCreate() {
+        return itersToCreate;
+    }
+
     public boolean hasGimmeRowOrColumn() {
         return puzzle.hasGimmeRowOrColumn();
     }

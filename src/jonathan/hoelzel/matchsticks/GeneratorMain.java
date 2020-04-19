@@ -8,7 +8,6 @@ import java.util.*;
 import java.util.Map.Entry;
 import java.util.stream.Collectors;
 
-
 public class GeneratorMain {
     private static final int PUZZLES_TO_GENERATE = 10000;
     private static final int WIDTH = 6;
@@ -28,6 +27,11 @@ public class GeneratorMain {
 //            System.out.println("Seed: " + seed);
             generatedPuzzles.add(generator.getPuzzle(WIDTH, HEIGHT, seed));
         }
+
+        System.out.println("Average attempts required to generate each puzzle: " +
+                generatedPuzzles.stream()
+                        .mapToInt(GeneratedPuzzle::getItersToCreate)
+                        .average().getAsDouble());
 
         Map<DifficultyRange, List<GeneratedPuzzle>> puzzlesToKeep = PUZZLES_PER_DIFFICULTY.entrySet().stream()
                 .collect(Collectors.toMap(Entry::getKey,
