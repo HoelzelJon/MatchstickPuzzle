@@ -23,6 +23,10 @@ public class GeneratedPuzzle {
         return itersToCreate;
     }
 
+    public Puzzle getPuzzle() {
+        return puzzle;
+    }
+
     public boolean hasGimmeRowOrColumn() {
         return puzzle.hasGimmeRowOrColumn();
     }
