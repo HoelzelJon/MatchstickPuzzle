@@ -55,5 +55,6 @@ If the solver cannot resolve what some cells are (which shouldn't happen for a g
 # Future Extentions
 - Better graphics for viewing the generated puzzles
 - Improving the puzzle-generation algorithm to allow for generation of larger puzzles
-- If the current solver gives up on a puzzle, try brute-force solving it
+- ~~If the current solver gives up on a puzzle, try brute-force solving it~~
+    - Add an option for this in the generator, since it takes a lot of work to try all solutions
     - If any puzzles can be solved in this manner, try finding the logic behind it and incorporating that into the solver

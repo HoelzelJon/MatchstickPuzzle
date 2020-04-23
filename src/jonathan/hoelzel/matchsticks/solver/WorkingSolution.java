@@ -3,6 +3,7 @@ package jonathan.hoelzel.matchsticks.solver;
 import jonathan.hoelzel.matchsticks.Cell;
 import jonathan.hoelzel.matchsticks.Util.Grid;
 import jonathan.hoelzel.matchsticks.Util.Util;
+import jonathan.hoelzel.matchsticks.Util.Vector;
 import jonathan.hoelzel.matchsticks.generator.Puzzle;
 import jonathan.hoelzel.matchsticks.solver.view.LineView;
 import jonathan.hoelzel.matchsticks.solver.view.ViewPerspective;
@@ -19,6 +20,18 @@ public class WorkingSolution {
         this.board = Grid.transform(puzzle.getHeadDirections(), Cell::new);
         this.burntPerRow = puzzle.getBurntPerRow();
         this.burntPerColumn = puzzle.getBurntPerColumn();
+    }
+
+    public WorkingSolution(Solution solution) {
+        this.board = Grid.transform(solution.getBoard(), Cell::new);
+        this.burntPerRow = solution.getBurntPerRow();
+        this.burntPerColumn = solution.getBurntPerColumn();
+    }
+
+    public WorkingSolution(WorkingSolution other) {
+        this.board = Grid.transform(other.board, Cell::new);
+        this.burntPerRow = other.burntPerRow;
+        this.burntPerColumn = other.burntPerColumn;
     }
 
     public List<LineView> getRowAndColumnViews() {
@@ -43,6 +56,10 @@ public class WorkingSolution {
         return views;
     }
 
+    public boolean hasNoUnknowns() {
+        return !board.containsAny(cell -> cell.getBurntStatus() == BurntStatus.UNKNOWN);
+    }
+
     public Grid<Cell> getBoard() {
         return board;
     }
@@ -53,6 +70,10 @@ public class WorkingSolution {
 
     public List<Integer> getBurntPerColumn() {
         return burntPerColumn;
+    }
+
+    public void setBurntStatus(Vector pos, BurntStatus status) {
+        board.put(pos, board.get(pos).withStatus(status));
     }
 
     @Override

@@ -10,12 +10,14 @@ import java.util.stream.Collectors;
 
 public class GeneratorMain {
     private static final int PUZZLES_TO_GENERATE = 10000;
+    private static final int PUZZLES_BETWEEN_LOG = 500;
     private static final int WIDTH = 6;
     private static final int HEIGHT = 6;
 
     private static final Map<DifficultyRange, Integer> PUZZLES_PER_DIFFICULTY = Map.of(
             new DifficultyRange("Medium", 20, 25), 27,
-            new DifficultyRange("Hard", 26, Integer.MAX_VALUE), 27);
+            new DifficultyRange("Hard", 26, 99), 27,
+            new DifficultyRange("Extreme", 100, Integer.MAX_VALUE), 1000);
 
     public static void main(String[] args) {
         Solver solver = new Solver();
@@ -23,8 +25,11 @@ public class GeneratorMain {
         List<GeneratedPuzzle> generatedPuzzles = new ArrayList<>(PUZZLES_TO_GENERATE);
 
         for (int i = 0; i < PUZZLES_TO_GENERATE; i ++) {
+            if (i > 0 && i % PUZZLES_BETWEEN_LOG == 0) {
+                System.out.println("" + i + " puzzles generated");
+            }
+
             long seed = (long)(Math.random() * Long.MAX_VALUE);
-//            System.out.println("Seed: " + seed);
             generatedPuzzles.add(generator.getPuzzle(WIDTH, HEIGHT, seed));
         }
 

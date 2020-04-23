@@ -85,6 +85,15 @@ public class Grid<T> implements Iterable<Vector> {
         return new VectorRectangleIterator(width(), height());
     }
 
+    public Optional<Vector> findAny(Predicate<T> predicate) {
+        for (Vector v : this) {
+            if (predicate.test(get(v))) {
+                return Optional.of(v);
+            }
+        }
+        return Optional.empty();
+    }
+
     @Override
     public String toString() {
         StringBuilder builder = new StringBuilder();

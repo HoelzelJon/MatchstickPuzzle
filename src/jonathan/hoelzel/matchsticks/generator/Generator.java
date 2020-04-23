@@ -3,7 +3,7 @@ package jonathan.hoelzel.matchsticks.generator;
 import jonathan.hoelzel.matchsticks.Cell;
 import jonathan.hoelzel.matchsticks.Direction;
 import jonathan.hoelzel.matchsticks.Util.Grid;
-import jonathan.hoelzel.matchsticks.Util.Pair;
+import jonathan.hoelzel.matchsticks.solver.BruteForceSolver;
 import jonathan.hoelzel.matchsticks.solver.BurntStatus;
 import jonathan.hoelzel.matchsticks.solver.Solution;
 import jonathan.hoelzel.matchsticks.solver.Solver;
@@ -17,11 +17,13 @@ public class Generator {
     private final Random random;
     private final GridGenerator gridGenerator;
     private final Solver solver;
+    private final BruteForceSolver bruteForcer;
 
     public Generator(Solver solver) {
         random = new Random();
         gridGenerator = new GridGenerator(random);
         this.solver = solver;
+        bruteForcer = new BruteForceSolver(solver);
     }
 
     public GeneratedPuzzle getPuzzle(int width, int height, long seed) {
@@ -80,9 +82,10 @@ public class Generator {
     }
 
     private Optional<Integer> getDifficulty(Puzzle puzzle) {
-        Pair<Solution, Integer> solutionWithDifficulty = solver.solve(puzzle);
-        return solutionWithDifficulty.first().hasNoUnknowns()
-                ? Optional.of(solutionWithDifficulty.second())
-                : Optional.empty();
+        Solution solution = solver.solve(puzzle).get();
+
+        return solution.hasNoUnknowns()
+                ? Optional.of(solution.getDifficulty())
+                : bruteForcer.finishSolving(solution).map(Solution::getDifficulty);
     }
 }

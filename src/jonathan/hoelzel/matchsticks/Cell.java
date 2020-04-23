@@ -10,13 +10,17 @@ public class Cell {
         this(dir, BurntStatus.UNKNOWN);
     }
 
-    public Cell withStatus(BurntStatus newStatus) {
-        return new Cell(dir, newStatus);
+    public Cell(Cell other) {
+        this(other.dir, other.status);
     }
 
     public Cell(Direction dir, BurntStatus status) {
         this.dir = dir;
         this.status = status;
+    }
+
+    public Cell withStatus(BurntStatus newStatus) {
+        return new Cell(dir, newStatus);
     }
 
     public Direction getHeadDirection() {

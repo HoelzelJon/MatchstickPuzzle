@@ -89,7 +89,7 @@ public class LineView {
         return cells;
     }
 
-    private void markFirstUnknown(OrderedRange range, BurntStatus status, int count) {
+    private boolean markFirstUnknown(OrderedRange range, BurntStatus status, int count) {
         int remaining = count;
         for (int i : range) {
             if (remaining > 0 && get(i).getStatus() == BurntStatus.UNKNOWN) {
@@ -97,7 +97,7 @@ public class LineView {
                 setStatus(i, status);
             }
         }
-        assert remaining == 0;
+        return remaining == 0;
     }
 
     private void setStatus(int index, BurntStatus status) {
@@ -161,12 +161,14 @@ public class LineView {
             }
         }
 
-        public void markBurnt(int count) {
-            markFirstUnknown(getHeadToTailIndices(), BurntStatus.BURNT, count);
+        // return false iff failed
+        public boolean markBurnt(int count) {
+            return markFirstUnknown(getHeadToTailIndices(), BurntStatus.BURNT, count);
         }
 
-        public void markNotBurnt(int count) {
-            markFirstUnknown(getTailToHeadIndices(), BurntStatus.UNBURNT, count);
+        // return false iff failed
+        public boolean markNotBurnt(int count) {
+            return markFirstUnknown(getTailToHeadIndices(), BurntStatus.UNBURNT, count);
         }
 
         private OrderedRange getHeadToTailIndices() {
