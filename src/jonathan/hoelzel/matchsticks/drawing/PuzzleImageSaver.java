@@ -17,8 +17,18 @@ import java.util.List;
 public class PuzzleImageSaver {
     private static final int CELL_SIZE = 50;
     private static final int BORDER_SIZE = 25;
+
+    private static final int FONT_BORDER_SIZE_WIDTH = 30;
+    private static final int FONT_BORDER_SIZE_HEIGHT = 35;
+    private static final int FONT_SIZE = 30;
+    private static final int FONT_COLUMNS_X_OFFSET = 18;
+    private static final int FONT_COLUMNS_Y_OFFSET = -20;
+    private static final int FONT_ROWS_X_OFFSET = -40;
+    private static final int FONT_ROWS_Y_OFFSET = 34;
+
     private static final int MATCHSTICK_STICK_THICKNESS = 10;
     private static final int MATCHSTICK_TAIL_LENGTH_PAST_CENTER = 8;
+
 
     private static final int MATCH_HEAD_WIDTH = 20;
     private static final int MATCH_HEAD_LENGTH = 36;
@@ -35,11 +45,13 @@ public class PuzzleImageSaver {
 
     private BufferedImage getImage(Puzzle puzzle) {
         Grid<Direction> headDirections = puzzle.getHeadDirections();
-        int widthPixels = (headDirections.width() * CELL_SIZE) + (BORDER_SIZE * 2);
-        int heightPixels = (headDirections.height() * CELL_SIZE) + (BORDER_SIZE * 2);
+        int widthPixels = (headDirections.width() * CELL_SIZE) + (BORDER_SIZE * 2) + FONT_BORDER_SIZE_WIDTH;
+        int heightPixels = (headDirections.height() * CELL_SIZE) + (BORDER_SIZE * 2) + FONT_BORDER_SIZE_HEIGHT;
+
         BufferedImage image = new BufferedImage(widthPixels, heightPixels, BufferedImage.TYPE_INT_RGB);
         Graphics2D g2d = image.createGraphics();
         g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+        g2d.setFont(new Font("", Font.PLAIN, FONT_SIZE));
 
         g2d.setColor(Color.WHITE);
         g2d.fillRect(0, 0, widthPixels, heightPixels);
@@ -47,11 +59,21 @@ public class PuzzleImageSaver {
 
         for (int x = 0; x <= headDirections.width(); x++) {
             int xPixel = toPixelPosition(x);
-            g2d.drawLine(xPixel, BORDER_SIZE, xPixel, heightPixels - BORDER_SIZE);
+            g2d.drawLine(xPixel, toPixelPosition(0), xPixel, toPixelPosition(headDirections.height()));
+            if (x < headDirections.width()) {
+                g2d.drawString(Integer.toString(puzzle.getBurntPerColumn().get(x)),
+                        xPixel + FONT_COLUMNS_X_OFFSET,
+                        toPixelPosition(headDirections.height() + 1) + FONT_COLUMNS_Y_OFFSET);
+            }
         }
         for (int y = 0; y <= headDirections.height(); y ++) {
             int yPixel = toPixelPosition(y);
-            g2d.drawLine(BORDER_SIZE, yPixel, widthPixels - BORDER_SIZE, yPixel);
+            g2d.drawLine(toPixelPosition(0), yPixel, toPixelPosition(headDirections.width()), yPixel);
+            if (y < headDirections.height()) {
+                g2d.drawString(Integer.toString(puzzle.getBurntPerRow().get(y)),
+                        toPixelPosition(headDirections.width() + 1) + FONT_ROWS_X_OFFSET,
+                        yPixel + FONT_ROWS_Y_OFFSET);
+            }
         }
 
         g2d.setStroke(new BasicStroke(2));
