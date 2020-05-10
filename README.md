@@ -53,7 +53,7 @@ This is the same as the board, as described above, but with `X` next to each bur
 If the solver cannot resolve what some cells are (which shouldn't happen for a generated puzzle), then the cell will have a `?` next to it.
 
 # Future Extentions
-- Better graphics for viewing the generated puzzles
+- ~~Better graphics for viewing the generated puzzles~~
 - Improving the puzzle-generation algorithm to allow for generation of larger puzzles
 - ~~If the current solver gives up on a puzzle, try brute-force solving it~~
     - Add an option for this in the generator, since it takes a lot of work to try all solutions

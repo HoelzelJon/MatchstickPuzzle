@@ -6,22 +6,28 @@ import jonathan.hoelzel.matchsticks.Util.Vector;
 // right = increasing x-values
 // down = increasing y-values
 public enum Direction {
-    U(0, -1, "^"),
-    D(0, 1, "v"),
-    L(-1, 0, "<"),
-    R(1, 0, ">"),
-    NOT_SET(Integer.MAX_VALUE, Integer.MAX_VALUE, "X");
+    R(1, 0, 0, ">"),
+    U(0, -1, 90, "^"),
+    L(-1, 0, 180, "<"),
+    D(0, 1, 270, "v"),
+    NOT_SET(Integer.MAX_VALUE, Integer.MAX_VALUE, Double.NaN, "X");
 
     private final Vector movementVector;
+    private final double angleInRadians;
     private final String str;
 
-    Direction(int dX, int dY, String str) {
+    Direction(int dX, int dY, double angleInDegrees, String str) {
         movementVector = new Vector(dX, dY);
+        this.angleInRadians = Math.toRadians(angleInDegrees);
         this.str = str;
     }
 
     public Vector vector() {
         return movementVector;
+    }
+
+    public double angle() {
+        return angleInRadians;
     }
 
     @Override

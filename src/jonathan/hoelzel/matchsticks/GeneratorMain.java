@@ -1,15 +1,17 @@
 package jonathan.hoelzel.matchsticks;
 
+import jonathan.hoelzel.matchsticks.drawing.PuzzleImageSaver;
 import jonathan.hoelzel.matchsticks.generator.GeneratedPuzzle;
 import jonathan.hoelzel.matchsticks.generator.Generator;
 import jonathan.hoelzel.matchsticks.solver.Solver;
 
+import java.io.IOException;
 import java.util.*;
 import java.util.Map.Entry;
 import java.util.stream.Collectors;
 
 public class GeneratorMain {
-    private static final int PUZZLES_TO_GENERATE = 10000;
+    private static final int PUZZLES_TO_GENERATE = 100;
     private static final int PUZZLES_BETWEEN_LOG = 500;
     private static final int WIDTH = 6;
     private static final int HEIGHT = 6;
@@ -19,7 +21,7 @@ public class GeneratorMain {
             new DifficultyRange("Hard", 26, 99), 27,
             new DifficultyRange("Extreme", 100, Integer.MAX_VALUE), 1000);
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
         Solver solver = new Solver();
         Generator generator = new Generator(solver);
         List<GeneratedPuzzle> generatedPuzzles = new ArrayList<>(PUZZLES_TO_GENERATE);
@@ -56,6 +58,9 @@ public class GeneratorMain {
             for (GeneratedPuzzle puzzle : entry.getValue()) {
                 System.out.println(puzzle + "\n\n");
             }
+
+            new PuzzleImageSaver().saveImages(entry.getValue().stream().map(GeneratedPuzzle::getPuzzle).collect(Collectors.toList()),
+                    "puzzleImages/" + entry.getKey().getName());
         }
     }
 
