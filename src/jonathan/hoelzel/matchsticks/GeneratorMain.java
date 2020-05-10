@@ -18,12 +18,11 @@ public class GeneratorMain {
 
     private static final Map<DifficultyRange, Integer> PUZZLES_PER_DIFFICULTY = Map.of(
             new DifficultyRange("Medium", 20, 25), 27,
-            new DifficultyRange("Hard", 26, 99), 27,
-            new DifficultyRange("Extreme", 100, Integer.MAX_VALUE), 1000);
+            new DifficultyRange("Hard", 26, 99), 27);
 
     public static void main(String[] args) throws IOException {
         Solver solver = new Solver();
-        Generator generator = new Generator(solver);
+        Generator generator = new Generator(solver, false);
         List<GeneratedPuzzle> generatedPuzzles = new ArrayList<>(PUZZLES_TO_GENERATE);
 
         for (int i = 0; i < PUZZLES_TO_GENERATE; i ++) {

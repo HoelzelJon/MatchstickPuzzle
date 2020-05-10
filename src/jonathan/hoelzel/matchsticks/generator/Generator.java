@@ -18,12 +18,14 @@ public class Generator {
     private final GridGenerator gridGenerator;
     private final Solver solver;
     private final BruteForceSolver bruteForcer;
+    private final boolean shouldTryBruteForcing;
 
-    public Generator(Solver solver) {
+    public Generator(Solver solver, boolean shouldTryBruteForcing) {
         random = new Random();
         gridGenerator = new GridGenerator(random);
         this.solver = solver;
         bruteForcer = new BruteForceSolver(solver);
+        this.shouldTryBruteForcing = shouldTryBruteForcing;
     }
 
     public GeneratedPuzzle getPuzzle(int width, int height, long seed) {
@@ -84,8 +86,12 @@ public class Generator {
     private Optional<Integer> getDifficulty(Puzzle puzzle) {
         Solution solution = solver.solve(puzzle).get();
 
-        return solution.hasNoUnknowns()
-                ? Optional.of(solution.getDifficulty())
-                : bruteForcer.finishSolving(solution).map(Solution::getDifficulty);
+        if (solution.hasNoUnknowns()) {
+            return Optional.of(solution.getDifficulty());
+        } else {
+            return shouldTryBruteForcing
+                    ? Optional.empty()
+                    : bruteForcer.finishSolving(solution).map(Solution::getDifficulty);
+        }
     }
 }

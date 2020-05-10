@@ -12,7 +12,7 @@ public class SeedSolverMain {
         long seed = 4523392140995079168L;
         int width = 6;
         int height = 6;
-        Generator generator = new Generator(new Solver());
+        Generator generator = new Generator(new Solver(), false);
         GeneratedPuzzle puzzle = generator.getPuzzle(width, height, seed);
 
         Solver solver = new Solver();
